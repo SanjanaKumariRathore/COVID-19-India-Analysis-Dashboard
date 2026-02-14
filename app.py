@@ -4,16 +4,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.express as px
 
-# ======================
-# PAGE CONFIG
-# ======================
 st.set_page_config(page_title="COVID India Dashboard", layout="wide")
 
 st.title("🦠 COVID-19 India Analysis Dashboard")
 
-# ======================
-# LOAD DATA
-# ======================
 @st.cache_data
 def load_data():
     covid = pd.read_csv("covid_19_india.csv")
@@ -34,17 +28,11 @@ def load_data():
 
 covid, vaccine = load_data()
 
-# ======================
-# SIDEBAR
-# ======================
 menu = st.sidebar.selectbox(
     "Select Section",
     ["Overview","Statewise Analysis","Top Active Cases","Vaccination Analysis"]
 )
 
-# ======================
-# OVERVIEW
-# ======================
 if menu == "Overview":
     st.subheader("COVID Dataset")
     st.dataframe(covid.head())
@@ -52,9 +40,6 @@ if menu == "Overview":
     st.subheader("Vaccination Dataset")
     st.dataframe(vaccine.head())
 
-# ======================
-# STATEWISE ANALYSIS
-# ======================
 elif menu == "Statewise Analysis":
     statewise = pd.pivot_table(
         covid,
@@ -76,9 +61,6 @@ elif menu == "Statewise Analysis":
         by='Confirmed',ascending=False
     ))
 
-# ======================
-# ACTIVE CASES CHART
-# ======================
 elif menu == "Top Active Cases":
     top_states = covid.groupby(
         'State/UnionTerritory'
@@ -97,9 +79,6 @@ elif menu == "Top Active Cases":
 
     st.pyplot(fig)
 
-# ======================
-# VACCINATION ANALYSIS
-# ======================
 elif menu == "Vaccination Analysis":
 
     male = vaccine['Male (Doses Administered)'].sum()
@@ -112,3 +91,4 @@ elif menu == "Vaccination Analysis":
     )
 
     st.plotly_chart(fig)
+
